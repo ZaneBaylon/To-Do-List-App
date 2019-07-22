@@ -17,13 +17,17 @@ dateElement.innerHTML = today.toLocaleDateString("en-US", options)
 
 // add to do function
 
-function addToDo(toDo){
+function addToDo(toDo, id, done, trash){
+    if(trash){ return; }
 
-    // this is from the HTML file, defines each to do column
+    const DONE = done ? CHECK : UNCHECK
+    const LINE = done ? LINE_THROUGH : "";
+
+    // this is from the HTML file, defines each part of the list-row
     const item = `<li class="item"> 
-                <i class="fa fa-circle-thin co" job="complete" id="0"></i>
-                <p class="text">${toDo}</p>
-                <i class="fa fa-trash-o de" job="delete" id="0"></i>
+                <i class="fa ${DONE} co" job="complete" id="${id}"></i>
+                <p class="text ${LINE}">${toDo}</p>
+                <i class="fa fa-trash-o de" job="delete" id="${id}"></i>
                 </li>
               `;
     const position = "beforeend";
@@ -32,13 +36,15 @@ function addToDo(toDo){
 }
 
 // add an item to the list user the enter key
-document.addEventListener("keyup",function(event){
-    if(event.keycode == 13){ // 13 = "enter" key on keyboard
+document.addEventListener("keyup",function(even){
+    if(event.keyCode == 13){ // 13 = "enter" key on keyboard
         const toDo = input.value;
 
         // if the input isn't empty
         if(toDo){
-            addToDo(toDo)
+            addToDo(toDo);
         }
+        input.value = "";
     }
 });
+addToDo("coffee", 1, true, false)
