@@ -10,7 +10,7 @@ const UNCHECK = "fa-circle-thin" // for the uncheck button
 const LINE_THROUGH = "lineThrough"; // for the line throught the text
 
 // variables
-let list = []
+let LIST = []
     , id = 0;
 
 // show today's date
@@ -22,9 +22,10 @@ dateElement.innerHTML = today.toLocaleDateString("en-US", options)
 // add to do function
 
 function addToDo(toDo, id, done, trash){
+   
     if(trash){ return; }
 
-    const DONE = done ? CHECK : UNCHECK
+    const DONE = done ? CHECK : UNCHECK;
     const LINE = done ? LINE_THROUGH : "";
 
     // this is from the HTML file, defines each part of the list-row
@@ -40,7 +41,7 @@ function addToDo(toDo, id, done, trash){
 }
 
 // add an item to the list user the enter key
-document.addEventListener("keyup",function(even){
+document.addEventListener("keyup",function(event){
     if(event.keyCode == 13){ // 13 = "enter" key on keyboard
         const toDo = input.value;
 
@@ -83,9 +84,9 @@ list.addEventListener("click", function(event){
     const element = event.target; // retrun the clicked element inside list
     const elementJob = element.attributes.job.value; // complete or delete
 
-    it (elementJob == "complete"){
+    if (elementJob == "complete") {
         completeToDo(element);
-    }else if(elementJob == "remove"){
+    }else if(elementJob == "delete"){
         removeToDo(element);
     }
 });
