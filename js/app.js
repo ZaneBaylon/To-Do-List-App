@@ -9,6 +9,10 @@ const CHECK = "fa-check-circle" // for the bottom check button
 const UNCHECK = "fa-circle-thin" // for the uncheck button
 const LINE_THROUGH = "lineThrough"; // for the line throught the text
 
+// variables
+let list = []
+    , id = 0;
+
 // show today's date
 const options = {weekday : "long", month : "short", day : "numeric"}; // defines the options for the date
 const today = new Date(); // defines the constant "today"
@@ -42,9 +46,46 @@ document.addEventListener("keyup",function(even){
 
         // if the input isn't empty
         if(toDo){
-            addToDo(toDo);
+            addToDo(toDo, id, false, false);
+
+            ListeningStateChangedEvent.push({
+                name : toDo,
+                id : id,
+                done : false,
+                trash : false
+            });
+
+            id++;
         }
         input.value = "";
     }
 });
-addToDo("coffee", 1, true, false)
+
+// complete to do for when the user clicks the complete button
+function completeToDo(element){
+    element.classList.toggle(CHECK);
+    element.classList.toggle(UNCHECK);
+    element.parentNode.querySelector(".text").classList.toggle(LINE_THROUGH);
+
+    LIST[element.id].done = LIST[element.id].done ? false : true;
+}
+
+// remove to do
+function removeToDo(element){
+    element.parentNode.parentNode.removeChild(element.parentNode);
+
+    LIST[element.id].trash = true;
+}
+
+// target the items created dynamically
+
+list.addEventListener("click", function(event){
+    const element = event.target; // retrun the clicked element inside list
+    const elementJob = element.attributes.job.value; // complete or delete
+
+    it (elementJob == "complete"){
+        completeToDo(element);
+    }else if(elementJob == "remove"){
+        removeToDo(element);
+    }
+});
