@@ -10,8 +10,34 @@ const UNCHECK = "fa-circle-thin" // for the uncheck button
 const LINE_THROUGH = "lineThrough"; // for the line throught the text
 
 // variables
-let LIST = []
-    , id = 0;
+let LIST, id;
+
+// get item from localstorage
+let data = localStorage.getItem("TODO");
+
+// check if data is not empty
+if(data){
+    LIST = JSON.parse(data);
+    id = LIST.length; // set the id to the last one in the list
+    loadList(LIST); // load the list to the user interface
+}else{
+    // if data isn't empty
+    LIST = [];
+    id = 0;
+}
+
+// load items to the user's interface
+function loadList(array){
+    array.forEach(function(item){
+        addToDo(item.name, item.id, item.done, item.trash);
+    });
+}
+
+// clear the local storage
+clear.addEventListener("click", function(){
+    localStorage.clear();
+    location.reload();
+});
 
 // show today's date
 const options = {weekday : "long", month : "short", day : "numeric"}; // defines the options for the date
@@ -28,7 +54,7 @@ function addToDo(toDo, id, done, trash){
     const DONE = done ? CHECK : UNCHECK;
     const LINE = done ? LINE_THROUGH : "";
 
-    // this is from the HTML file, defines each part of the list-row
+    // this is from the HTML file, defines each part of the list-row (good example of iterating elements)
     const item = `<li class="item"> 
                 <i class="fa ${DONE} co" job="complete" id="${id}"></i>
                 <p class="text ${LINE}">${toDo}</p>
@@ -56,6 +82,9 @@ document.addEventListener("keyup",function(event){
                 trash : false
             });
 
+            // add item to local storage ( this code must be added where the LIST array is updated )
+            localStorage.setItem("TODO", JSON.stringify(LIST));
+
             id++;
         }
         input.value = "";
@@ -73,7 +102,7 @@ function completeToDo(element){
 
 // remove to do
 function removeToDo(element){
-    element.parentNode.parentNode.removeChild(element.parentNode);
+    element.parentNode.parentNode.removeChild(element.parentNode); 
 
     LIST[element.id].trash = true;
 }
@@ -89,4 +118,7 @@ list.addEventListener("click", function(event){
     }else if(elementJob == "delete"){
         removeToDo(element);
     }
+
+    // add item to local storage ( this code must be added where the LIST array is updated )
+    localStorage.setItem("TODO", JSON.stringify(LIST));
 });
