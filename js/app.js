@@ -66,8 +66,6 @@ function addToDo(toDo, id, done, trash){
     list.insertAdjacentHTML(position, item);
 }
 
-let ListeningStateChangedEvent = [];
-
 // add an item to the list user the enter key
 document.addEventListener("keyup",function(event){
     if(event.keyCode == 13){ // 13 = "enter" key on keyboard
@@ -77,7 +75,7 @@ document.addEventListener("keyup",function(event){
         if(toDo){
             addToDo(toDo, id, false, false);
 
-            ListeningStateChangedEvent.push({
+            LIST.push({
                 name : toDo,
                 id : id,
                 done : false,
